@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eidi Distribution 2026</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'sans-serif'], // Just bangla default
+                    },
+                    colors: {
+                        brand: '#ec4899', // pink-500
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body
+    class="bg-gradient-to-tr from-fuchsia-50 via-rose-50 to-amber-50 min-h-screen text-slate-800 font-sans antialiased overflow-x-hidden transition-colors duration-500 relative flex flex-col items-center">
+
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <!-- Top Navigation (Removed language switch) -->
+    <nav class="w-full max-w-2xl px-6 py-4 flex justify-end items-center relative z-20">
+    </nav>
+
+    <!-- VVIP Celebration Modal -->
+    <div id="vvip-modal"
+        class="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-500 bg-black/40 backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl max-w-sm w-full mx-4 transform scale-50 transition-transform duration-500"
+            id="vvip-modal-content">
+            <div class="text-center">
+                <i class="fa-solid fa-crown text-5xl text-amber-400 mb-4 animate-bounce"></i>
+                <h3 class="text-2xl font-black text-pink-500 mb-2">ভিভিআইপি এলার্ট!</h3>
+                <p id="vvip-modal-message" class="text-gray-600 font-medium text-lg"></p>
+            </div>
+            <button
+                onclick="document.getElementById('vvip-modal').classList.add('opacity-0', 'pointer-events-none'); document.getElementById('vvip-modal-content').classList.replace('scale-100', 'scale-50');"
+                class="mt-6 w-full py-3 bg-gradient-to-r from-pink-500 to-orange-400 rounded-full text-white font-bold pointer-events-auto shadow-md">
+                ওকে বুঝছি
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container - Full height, open layout -->
+    <main class="w-full max-w-2xl px-6 pb-20 flex-1 relative z-10 flex flex-col">
+        <section class="max-w-4xl mx-auto px-4 pt-6 pb-10 sm:pt-10 sm:pb-16" id="main-header">
+            <div class="relative w-full aspect-video mb-8 overflow-hidden rounded-2xl bg-gray-100 shadow-sm">
+                <img src="assets/uilpg.jpg" alt="Eid Mubarak 2026" class="w-full h-full object-cover" />
+            </div>
+
+            <div class="text-center space-y-3">
+                <h1 class="text-4xl sm:text-6xl font-bold text-slate-700 tracking-tight">
+                    ঈদি ২০২৬
+                </h1>
+
+                <div class="w-12 h-1 bg-rose-200 mx-auto rounded-full"></div>
+
+                <p class="text-lg sm:text-xl font-light text-slate-500 max-w-md mx-auto leading-relaxed"
+                    id="t-hero-subtitle">
+                    দেখা যাক এই ঈদে কপালে কী আছে।
+                </p>
+            </div>
+        </section>
+
+
+        <!-- App Sections flow vertically, replacing the boxed form feel -->
+        <div class="relative w-full flex-1 flex flex-col items-center">
+
+            <section id="phase-1" class="phase-section active w-full flex-col align-center space-y-12">
+                <div class="w-full text-center">
+                    <label for="user-name" class="block text-3xl font-bold text-gray-700 mb-6" id="t-p1-name-label">আগে
+                        বলো, তুমি কে?</label>
+                    <input type="text" id="user-name"
+                        class="appearance-none block w-full px-4 py-3 hero-input text-center text-4xl sm:text-5xl font-black focus:outline-none"
+                        placeholder="তোমার নাম দাও" autocomplete="off" oninput="app.checkPhase1Ready()">
+                </div>
+
+                <div id="loyalty-container"
+                    class="w-full text-center opacity-0 transition-opacity duration-500 pointer-events-none">
+                    <label class="block text-2xl font-bold text-gray-700 mb-6" id="t-p1-dropdown-label">শেষ কবে দেখা
+                        হইছিলো আমাদের?</label>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button type="button"
+                            class="pill-option px-6 py-3 rounded-full text-lg font-bold text-gray-600 cursor-pointer"
+                            onclick="app.selectLoyalty(2.0, this)" id="t-opt-7days">এই সপ্তাহে</button>
+                        <button type="button"
+                            class="pill-option px-6 py-3 rounded-full text-lg font-bold text-gray-600 cursor-pointer"
+                            onclick="app.selectLoyalty(1.0, this)" id="t-opt-2weeks">গত ২ সপ্তাহে</button>
+                        <button type="button"
+                            class="pill-option px-6 py-3 rounded-full text-lg font-bold text-gray-600 cursor-pointer"
+                            onclick="app.selectLoyalty(0.5, this)" id="t-opt-1month">গত মাসে</button>
+                        <button type="button"
+                            class="pill-option px-6 py-3 rounded-full text-lg font-bold text-gray-600 cursor-pointer"
+                            onclick="app.selectLoyalty(0.1, this)" id="t-opt-ghost">আমি একটা ভূত</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase-2"
+                class="phase-section w-full flex-col items-center text-center space-y-8 mt-4 absolute top-0 left-0 w-full transition-all">
+                <div class="w-full glass-panel rounded-[2rem] p-8">
+                    <p class="text-pink-500 font-extrabold text-2xl mb-2" id="t-p2-owes">তুমি পাবে</p>
+                    <h2 class="text-[5rem] sm:text-[7rem] font-black text-gray-800 leading-none drop-shadow-sm mb-2">
+                        <span id="calculated-amount">0</span><span class="text-4xl text-gray-400 ml-2">TK</span>
+                    </h2>
+                    <p class="text-gray-500 font-medium">মুকতাদিরের পক্ষ থেকে</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 w-full justify-center mt-8">
+                    <button id="btn-coward"
+                        class="px-8 py-4 text-xl font-bold rounded-full text-gray-500 bg-white/50 border border-white hover:bg-white focus:outline-none transition-all duration-300">
+                        <span id="t-btn-coward">ভিতুর মতো এইটাই নিয়ে নিই</span>
+                    </button>
+                    <button id="btn-gamble"
+                        class="px-8 py-4 text-xl font-extrabold rounded-full text-white animate-glow-pulse overflow-hidden shadow-[0_10px_25px_0_rgba(236,72,153,0.4)] transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg focus:outline-none relative group">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-pink-500 to-orange-400 group-hover:scale-105 transition-transform">
+                        </div>
+                        <span class="relative flex items-center justify-center gap-2">
+                            <span id="t-btn-gamble">১০০ টাকার জন্য স্ক্র্যাচ করো</span> <i
+                                class="fa-solid fa-wand-magic-sparkles"></i>
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="phase-3"
+                class="phase-section w-full flex-col items-center space-y-8 mt-4 absolute top-0 left-0 w-full transition-all">
+                <div class="text-center w-full mb-4" id="p3-header">
+                    <h2 class="text-4xl font-extrabold text-gray-800" id="t-p3-title">ভাগ্য যাচাই</h2>
+                    <p class="text-pink-500 font-medium mt-2" id="t-p3-subtitle">ঈদির পরিমাণ জানতে সোনালি আবরণ মুছে ফেল।
+                    </p>
+                </div>
+
+                <!-- Golden Scratch Area -->
+                <div
+                    class="relative w-full max-w-sm aspect-square mx-auto scratch-container rounded-[2.5rem] overflow-hidden shadow-[0_15px_40px_-10px_rgba(251,191,36,0.5)] border-[6px] border-white z-20 transition-transform">
+
+                    <!-- Result behind scratch -->
+                    <div id="scratch-result"
+                        class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-white/90 backdrop-blur-sm z-0">
+                        <div id="scratch-icon"
+                            class="text-7xl mb-4 opacity-0 transform scale-50 transition-all duration-700 ease-out drop-shadow-sm">
+                        </div>
+                        <div id="scratch-amount-display"
+                            class="text-5xl font-black mb-2 opacity-0 transform translate-y-4 transition-all duration-700 delay-100 ease-out">
+                        </div>
+                        <div id="scratch-message"
+                            class="text-lg font-bold opacity-0 transition-opacity duration-700 delay-300 ease-out px-4 py-2 rounded-xl bg-gray-50 border border-gray-100 mt-2">
+                        </div>
+                    </div>
+
+                    <!-- Canvas for scratching -->
+                    <canvas id="scratch-canvas"
+                        class="absolute inset-0 w-full h-full cursor-pointer touch-none z-10"></canvas>
+                </div>
+
+                <div id="p3-action-container"
+                    class="w-full pt-6 opacity-0 transition-opacity duration-500 pointer-events-none flex justify-center">
+                    <button id="btn-next-p4"
+                        class="px-10 py-4 text-xl font-extrabold rounded-full text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:scale-105 focus:outline-none shadow-[0_10px_20px_0_rgba(139,92,246,0.3)] transition-all duration-300">
+                        <span id="t-btn-next">ঈদি নিয়ে নাও</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section id="phase-4"
+                class="phase-section w-full flex-col align-center mt-4 absolute top-0 left-0 text-center space-y-10 transition-all">
+
+                <div class="glass-panel rounded-[2rem] p-8">
+                    <p class="text-pink-500 font-bold mb-2 uppercase tracking-wide text-sm" id="t-p4-final">সর্বমোট
+                        পরিমাণ
+                    </p>
+                    <h2
+                        class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500 drop-shadow-sm">
+                        <span id="final-amount">0</span> TK
+                    </h2>
+                </div>
+
+                <div class="w-full text-center mt-8">
+                    <label for="bkash-number" class="block text-3xl font-bold text-gray-700 mb-6"
+                        id="t-p4-bkash-label">বিকাশ নম্বর দাও</label>
+                    <input type="tel" id="bkash-number" maxlength="11"
+                        class="appearance-none block w-full px-4 py-3 hero-input text-center text-4xl sm:text-5xl font-black focus:outline-none tracking-widest text-violet-600"
+                        placeholder="০১৭••••••••" oninput="app.checkPhase4Ready()">
+                </div>
+
+                <div id="p4-submit-container"
+                    class="w-full text-center opacity-0 transition-opacity duration-500 pointer-events-none pt-4 flex justify-center">
+                    <button id="btn-request-eidi"
+                        class="px-10 py-5 text-2xl font-black rounded-full text-white bg-gradient-to-r from-emerald-400 to-teal-400 animate-glow-pulse hover:scale-105 focus:outline-none shadow-[0_10px_25px_0_rgba(52,211,153,0.4)] transition-all duration-300 relative overflow-hidden group w-full max-w-sm">
+                        <span id="btn-request-content" class="flex justify-center items-center gap-2">
+                            <span id="t-btn-request" class="drop-shadow-sm">রিকোয়েস্ট পাঠাও!</span> <i
+                                class="fa-solid fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                        </span>
+                        <span id="btn-request-spinner"
+                            class="hidden absolute inset-0 flex items-center justify-center bg-emerald-500">
+                            <i class="fa-solid fa-circle-notch fa-spin text-white text-3xl"></i>
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="phase-5"
+                class="phase-section w-full flex-col items-center space-y-8 mt-4 absolute top-0 left-0 w-full transition-all text-center">
+
+                <div class="relative w-48 h-48 mx-auto mt-4" id="status-icon-container">
+                    <div id="status-processing"
+                        class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-500">
+                        <div
+                            class="w-24 h-24 rounded-full border-4 border-amber-400 border-t-transparent animate-spin mb-4">
+                        </div>
+                        <h2 class="text-3xl font-black text-amber-500" id="t-status-p-title">প্রক্রিয়াধীন</h2>
+                    </div>
+
+                    <div id="status-done"
+                        class="absolute inset-0 flex flex-col items-center justify-center opacity-0 scale-50 transition-all duration-500">
+                        <div class="w-32 h-32 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-check text-5xl text-emerald-500"></i>
+                        </div>
+                        <h2 class="text-4xl font-black text-emerald-500 drop-shadow-sm" id="t-status-d-title">সফল!</h2>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-md mt-6 relative">
+                    <p class="text-xl font-medium text-gray-600 mb-6" id="status-message">মুকতাদিরের কাছে রিকোয়েস্ট
+                        গেছে। একটু দাঁড়াও...</p>
+
+                    <div
+                        class="bg-white/60 p-6 rounded-[2rem] border border-white/80 shadow-[0_4px_20px_-5px_rgba(0,0,0,0.05)] text-center divide-y divide-gray-100">
+                        <div class="py-3 flex justify-between items-center text-lg">
+                            <span class="text-gray-400 font-bold uppercase text-sm tracking-wider">তোমার নাম</span>
+                            <span id="status-name" class="font-bold text-gray-800 text-xl">User</span>
+                        </div>
+                        <div class="py-3 flex justify-between items-center text-lg">
+                            <span class="text-gray-400 font-bold uppercase text-sm tracking-wider">নিয়েছো</span>
+                            <span class="font-black text-brand text-2xl"><span id="status-amount">0</span> TK</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        window.firebaseApp = { initializeApp };
+        window.firebaseFirestore = { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp, onSnapshot, collection, query, where, getDocs };
+    </script>
+
+    <!-- App Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/scratch.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
