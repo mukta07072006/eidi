@@ -187,6 +187,10 @@ class AdminApp {
             </td>
             <td class="p-4 text-sm text-gray-500 font-medium">
                 ${dateStr}
+                <button onclick="window.adminApp.deleteEntry('${id}')" class="mt-2 w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wide text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+                    <i class="fa-solid fa-trash"></i>
+                    Delete
+                </button>
             </td>
         `;
 
@@ -200,6 +204,17 @@ class AdminApp {
             await updateDoc(doc(this.db, "eidi_requests", id), { status: 'done' });
         } catch (e) {
             console.error("Failed to mark as done:", e);
+            alert("Error: " + e.message);
+        }
+    }
+
+    async deleteEntry(id) {
+        if (!confirm('Delete this entry? This cannot be undone.')) return;
+        const { doc, deleteDoc } = window.firebaseAdminFirestore;
+        try {
+            await deleteDoc(doc(this.db, "eidi_requests", id));
+        } catch (e) {
+            console.error("Failed to delete entry:", e);
             alert("Error: " + e.message);
         }
     }

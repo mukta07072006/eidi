@@ -86,12 +86,12 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
         // Expose to admin.js
         window.firebaseAdminApp = { initializeApp };
         window.firebaseAdminAuth = { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut };
-        window.firebaseAdminFirestore = { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc };
+        window.firebaseAdminFirestore = { getFirestore, collection, onSnapshot, query, orderBy, doc, updateDoc, deleteDoc };
     </script>
 
     <script src="js/config.js"></script>

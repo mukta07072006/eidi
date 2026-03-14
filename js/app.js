@@ -29,6 +29,8 @@ class EidiApp {
         this.lang = 'bn'; // Only bangla
         this.applyLanguage();
 
+        this.showWelcomeModalIfFirstTime();
+
         if (hasPlayed === 'true' && storedName) {
             this.state.cleanNameId = storedName;
             await this.waitForDb();
@@ -217,6 +219,44 @@ class EidiApp {
         } else {
             submitContainer.classList.add('opacity-0', 'pointer-events-none');
         }
+    }
+
+    showWelcomeModalIfFirstTime() {
+        const key = 'eidi_welcome_shown';
+        if (localStorage.getItem(key) === 'true') return;
+
+        const modal = document.getElementById('welcome-modal');
+        const closeBtn = document.getElementById('welcome-close-btn');
+        const okBtn = document.getElementById('welcome-ok-btn');
+
+        const hide = () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            localStorage.setItem(key, 'true');
+            if (this._welcomeConfettiInterval) clearInterval(this._welcomeConfettiInterval);
+        };
+
+        closeBtn?.addEventListener('click', hide);
+        okBtn?.addEventListener('click', hide);
+
+        requestAnimationFrame(() => {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        });
+
+        // Confetti burst for ~2 seconds
+        const duration = 2000;
+        const end = Date.now() + duration;
+        this._welcomeConfettiInterval = setInterval(() => {
+            if (Date.now() > end) {
+                clearInterval(this._welcomeConfettiInterval);
+                return;
+            }
+            confetti({
+                particleCount: 25,
+                spread: 80,
+                origin: { x: Math.random(), y: Math.random() * 0.3 },
+                colors: ['#ec4899', '#f59e0b', '#10b981', '#3b82f6'],
+            });
+        }, 200);
     }
 
     t(key) {
