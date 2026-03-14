@@ -13,5 +13,5 @@ const firebaseConfig = {
 window.appConfig = {
     firebaseConfig,
     baseAmount: 10,
-    vvipNames: ["muktadir", "shakib", "john doe", "fariya"], // Hardcoded list of VVIPs (case insensitive)
+    vvipNames: ["muktadir", "raihan", "mithi", "fariya", "sihan"], // Hardcoded list of VVIPs (case insensitive)
 };
