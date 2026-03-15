@@ -503,6 +503,9 @@ class EidiApp {
             localStorage.setItem('user_name', this.state.cleanNameId);
             localStorage.setItem('eidi_lang', this.lang);
 
+            // Auto-download static card right after request is sent
+            await this.downloadStaticCard();
+
             this.goToPhase(5);
             this.setupStatusListener();
 
@@ -647,6 +650,62 @@ class EidiApp {
             toast.classList.add('hiding');
             toast.addEventListener('animationend', () => toast.remove());
         }, 3000);
+    }
+
+    async downloadStaticCard() {
+        const nameInput = document.getElementById('user-name');
+        // Auto-download static card without adding name - called after request submission
+        try {
+            // Create blob and download directly without canvas manipulation
+            fetch('assets/card.jpg')
+                .then(res => res.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = `Eid_Mobarak_${nameInput}.jpg`;
+                    link.href = url;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    // Show celebration confetti
+                    if (window.confetti) {
+                        confetti({
+                            particleCount: 50,
+                            spread: 60,
+                            origin: { y: 0.8 },
+                            colors: ['#f59e0b', '#fbbf24']
+                        });
+                    }
+                })
+                .catch(err => {
+                    console.error('Download failed:', err);
+                    this.showToast('ডাউনলোড ব্যর্থ হয়েছে!', 'error');
+                });
+        } catch (err) {
+            console.error('Download failed:', err);
+            this.showToast('ডাউনলোড ব্যর্থ হয়েছে!', 'error');
+        }
+    }
+
+    async downloadCard() {
+        const btn = document.getElementById('btn-download-card');
+        const originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        btn.disabled = true;
+
+        try {
+            // Call the static card download function
+            await this.downloadStaticCard();
+            
+        } catch (err) {
+            console.error('Download failed:', err);
+            this.showToast('ডাউনলোড ব্যর্থ হয়েছে!', 'error');
+        } finally {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+        }
     }
 }
 

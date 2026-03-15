@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eidi Distribution 2026</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -50,6 +50,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['Hind Siliguri', 'sans-serif'],
+                        cursive: ['Great Vibes', 'cursive']
                     },
                     colors: {
                         brand: '#10b981', 
@@ -225,6 +226,12 @@
                             <span class="font-black text-emerald-600"><span id="status-amount">0</span> TK</span>
                         </div>
                     </div>
+                </div>
+                
+                <div id="download-container" class="w-full text-center pt-4 opacity-0 transition-opacity duration-500 pointer-events-none mt-2">
+                    <button id="btn-download-card" class="px-8 py-4 text-lg font-bold rounded-full text-white bg-gradient-to-r from-amber-500 to-amber-600 shadow-lg shadow-amber-200/50 w-full max-w-sm transition-transform hover:scale-105 flex justify-center items-center gap-2 mx-auto">
+                        <span id="t-btn-download">কার্ড ডাউনলোড করো</span> <i class="fa-solid fa-download"></i>
+                    </button>
                 </div>
             </section>
         </div>
